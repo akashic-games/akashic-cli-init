@@ -30,6 +30,13 @@ interface RequestParameterObject {
 	encoding?: string;
 }
 
+export function getTemplateNameList(param: InitParameterObject): Promise<string[]> {
+	return getTemplateListJson(param)
+		.then((templateList: TemplateList) => {
+			return Object.keys(templateList.templates);
+		});
+}
+
 /**
  * TemplateListJson をダウンロードする
  */
@@ -139,14 +146,4 @@ export function downloadTemplateIfNeeded(param: InitParameterObject): Promise<vo
 			resolve();
 		});
 	});
-}
-
-/**
- * サーバに存在するテンプレート一覧を表示
- */
-export function listTemplates(param: InitParameterObject): Promise<void> {
-	return getTemplateListJson(param)
-		.then(templateListJson => {
-			Object.keys(templateListJson.templates).forEach(key => param.logger.print(key));
-		});
 }

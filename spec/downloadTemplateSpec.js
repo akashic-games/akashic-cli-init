@@ -1,4 +1,5 @@
 var dt = require("../lib/downloadTemplate");
+var lt = require("../lib/listTemplates");
 var commons = require("@akashic/akashic-cli-commons");
 var fs = require("fs");
 var os = require("os");
@@ -18,8 +19,10 @@ describe("downloadTemplate.ts", () => {
 				repository: "http://127.0.0.1:18080/",
 				templateListJsonPath: "template-list.json",
 				type: "javascript",
+				localTemplateDirectory: path.join(os.homedir(), ".akashic-templates")
 			};
-			dt.listTemplates(param)
+
+			lt.listTemplates(param)
 				.then(() => {
 					expect(str).toBe("javascript\ntypescript\n");
 				})
