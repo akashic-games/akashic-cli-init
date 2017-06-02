@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.2.4
+* --list オプションの有効化
+
+## 0.2.3
+* templatesをzipで持たないようにする対応
+
 ## 0.2.2
 * typescript テンプレートを更新
   * テンプレートの更新を反映するには、 `npm install @akashic/akashic-cli` を実行し、 `~/.akashic-templates` を削除した後、 `akashic init` を実行してください。
