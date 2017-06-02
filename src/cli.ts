@@ -3,7 +3,7 @@ import * as path from "path";
 import * as commander from "commander";
 import { ConsoleLogger } from "@akashic/akashic-cli-commons";
 import { promiseInit } from "./init";
-import { listTemplates } from "./downloadTemplate";
+import { listTemplates } from "./listTemplates";
 
 interface CommandParameterObject {
 	cwd?: string;

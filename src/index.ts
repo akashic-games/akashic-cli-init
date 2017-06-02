@@ -1,4 +1,3 @@
-import { promiseInit, init } from "./init";
-export { promiseInit, init };
-import { run } from "./cli";
-export { run };
+export { promiseInit, init } from "./init";
+export { listTemplates } from "./listTemplates";
+export { run } from "./cli";
