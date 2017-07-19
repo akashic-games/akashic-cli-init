@@ -30,10 +30,10 @@
     "jasmine-reporters": "~2.0.4",
     "jasmine-terminal-reporter": "~0.9.1",
     "tslint": "^3.10.2",
-    "typescript": "1.7.5",
+    "typescript": "2.1.6",
     "typings": "1.0.4",
-    "@akashic/akashic-cli": "v0.4.0-beta.0",
-    "@akashic/akashic-engine": "1.2.0",
-    "@akashic/akashic-sandbox": "^0.4.5"
+    "@akashic/akashic-cli": "1.1.4",
+    "@akashic/akashic-engine": "~1.12.3",
+    "@akashic/akashic-sandbox": "^0.12.4"
   }
 }
