@@ -43,7 +43,7 @@ describe("copyTemplate.ts", () => {
 		it("copy simple template", done => {
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
-				localTemplateDirectory: ".akashic-templates",
+				_realTemplateDirectory: ".akashic-templates",
 				type: "simple",
 				cwd: "home"
 			};
@@ -60,7 +60,7 @@ describe("copyTemplate.ts", () => {
 		it("copy manual template", done => {
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
-				localTemplateDirectory: ".akashic-templates",
+				_realTemplateDirectory: ".akashic-templates",
 				type: "manual",
 				cwd: "home"
 			};

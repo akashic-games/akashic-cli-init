@@ -45,6 +45,12 @@ export interface InitParameterObject {
 	 * 省略された場合、`akashic-config` の設定値を利用。
 	 */
 	localTemplateDirectory?: string;
+
+	/**
+	 * 利用すべきテンプレートの実体を指すパスを保存している場所。
+	 * この値はコマンド外部から指定できず、指定された場合、その値は破棄される。
+	 */
+	_realTemplateDirectory?: string;
 }
 
 const templateConfigValidator: config.StringMap = {
@@ -75,7 +81,7 @@ export function completeInitParameterObject(param: InitParameterObject): Promise
 				path.join(os.homedir(), ".akashic-templates");
 			return param.configFile.getItem("init.defaultTemplateType");
 		})
-		.then(defaultType => {
+		.then<void>(defaultType => {
 			param.type = (param.type || defaultType || "javascript").toLowerCase();
 			// 以下の正規表現は、akashic-configのvalidatorとそろえる必要があります。
 			if (!/^[\w\-]+$/.test(param.type))
