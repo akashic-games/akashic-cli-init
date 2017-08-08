@@ -1,6 +1,7 @@
 import { InitParameterObject, completeInitParameterObject } from "./InitParameterObject";
 import { updateConfigurationFile } from "./BasicParameters";
-import * as downloadTemplate from "./downloadTemplate";
+import { downloadTemplateIfNeeded } from "./downloadTemplate";
+import { extractZipIfNeeded } from "./extractZipIfNeeded";
 import * as copyTemplate from "./copyTemplate";
 import { showTemplateMessage } from "./showTemplateMessage";
 import { TemplateConfig } from "./TemplateConfig";
@@ -11,7 +12,8 @@ export function promiseInit(param: InitParameterObject): Promise<void> {
 
 	return Promise.resolve<void>(undefined)
 		.then(() => completeInitParameterObject(param))
-		.then(() => downloadTemplate.downloadTemplateIfNeeded(param))
+		.then(() => extractZipIfNeeded(param))
+		.then(() => downloadTemplateIfNeeded(param))
 		.then(() => readTemplateFile(param))
 		.then((template) => { templateConfig = template; })
 		.then(() => copyTemplate.copyTemplate(templateConfig, param))

@@ -19,7 +19,7 @@ describe("downloadTemplate.ts", () => {
 				repository: "http://127.0.0.1:18080/",
 				templateListJsonPath: "template-list.json",
 				type: "javascript",
-				localTemplateDirectory: path.join(os.homedir(), ".akashic-templates")
+				_realTemplateDirectory: path.join(os.homedir(), ".akashic-templates")
 			};
 
 			lt.listTemplates(param)
@@ -36,7 +36,7 @@ describe("downloadTemplate.ts", () => {
 			var tmpDir = path.join(os.tmpdir(), ".akashic-template");
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
-				localTemplateDirectory: tmpDir,
+				_realTemplateDirectory: tmpDir,
 				repository: "http://127.0.0.1:18080/",
 				templateListJsonPath: "template-list.json",
 				type: "javascript",
@@ -64,7 +64,7 @@ describe("downloadTemplate.ts", () => {
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				configFile: new MockConfigFile({}),
-				localTemplateDirectory: tmpDir,
+				_realTemplateDirectory: tmpDir,
 				repository: "",
 				templateListJsonPath: "template-list.json",
 				type: "javascript",

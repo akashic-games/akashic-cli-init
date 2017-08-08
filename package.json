@@ -1,6 +1,6 @@
 {
   "name": "@akashic/akashic-cli-init",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "A module to get your Akashic game started.",
   "main": "lib/index.js",
   "scripts": {
@@ -10,9 +10,9 @@
     "clean": "gulp clean",
     "start": "npm run build && node bin/run",
     "build": "gulp compile && gulp zip",
-    "lint": "gulp lint lint-md",
+    "lint": "tslint -c tslint.json src/**/*.ts",
     "pretest": "npm run build",
-    "test": "gulp safeTest lint lint-md"
+    "test": "gulp safeTest lint-md && npm run lint"
   },
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
@@ -41,8 +41,8 @@
     "mdast": "~2.0.0",
     "mdast-lint": "~1.1.1",
     "mock-fs": "^4.2.0",
-    "tslint": "~3.7.4",
-    "typescript": "1.7.5",
+    "tslint": "^5.4.3",
+    "typescript": "~2.1.6",
     "typings": "1.0.4"
   },
   "typings": "lib/index.d.ts",

@@ -33,12 +33,6 @@ gulp.task("zip", function() {
 	});
 });
 
-gulp.task("lint", function(){
-	return gulp.src("src/**/*.ts")
-		.pipe(tslint())
-		.pipe(tslint.report());
-});
-
 gulp.task("lint-md", function(){
 	return gulp.src(["**/*.md", "!node_modules/**/*.md"])
 		.pipe(shell(["mdast <%= file.path %> --frail --no-stdout --quiet"]));

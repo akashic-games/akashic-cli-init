@@ -15,7 +15,7 @@ export function copyTemplate(templateConfig: TemplateConfig, param: InitParamete
  * TemplateConfig に従ってコピーする
  */
 function runTemplateConfig(templateConfig: TemplateConfig, param: InitParameterObject): Promise<void> {
-	const srcDirPath = path.join(param.localTemplateDirectory, param.type);
+	const srcDirPath = path.join(param._realTemplateDirectory, param.type);
 	const dstDirPath = param.cwd;
 	if (templateConfig.files) {
 		return Promise.resolve()
@@ -51,7 +51,7 @@ function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string): P
  */
 function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 	return new Promise<void>((resolve, reject) => {
-		const srcDirPath = path.join(param.localTemplateDirectory, param.type);
+		const srcDirPath = path.join(param._realTemplateDirectory, param.type);
 		const dstDirPath = param.cwd;
 		fs.readdir(srcDirPath, (err, files) => {
 			if (err) {

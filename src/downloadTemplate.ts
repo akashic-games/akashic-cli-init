@@ -54,39 +54,36 @@ function getTemplateListJson(param: InitParameterObject): Promise<TemplateList> 
  * テンプレートのzipファイルをダウンロードして展開する
  */
 function downloadTemplate(param: InitParameterObject): Promise<void> {
-	return Promise.resolve()
-		.then(() => {
-			if (!param.repository) {
-				return Promise.reject(null); // リポジトリを利用しない場合
-			}
-			return Promise.resolve();
-		})
-		.then(() => getTemplateListJson(param))
-		.then(jsonFile => {
-			if (!jsonFile.templates[param.type]) {
-				return Promise.reject(new Error(`server doesn't have template: ${param.type}`));
-			}
-			const templateUri = param.repository + jsonFile.templates[param.type];
-			return Promise.resolve()
-				.then(() => promisedRequest({
-					uri: templateUri,
-					method: "GET",
-					encoding: null
-				}))
-				.then(buf => promisedExtract(
-					buf,
-					path.join(param.localTemplateDirectory, param.type)
-				));
-		})
-		.catch(err => {
-			if (param.repository) param.logger.warn(err);
-			param.logger.info("using factory template");
-			return getFactoryTemplate(param)
-				.then(buf => promisedExtract(buf, path.join(param.localTemplateDirectory, param.type)));
-		});
+	return new Promise<void>((resolve, reject) => {
+		if (!param.repository) {
+			return reject(null); // リポジトリを利用しない場合
+		}
+		return resolve();
+	})
+	.then(() => getTemplateListJson(param))
+	.then(jsonFile => {
+		if (!jsonFile.templates[param.type]) {
+			return Promise.reject(new Error(`server doesn't have template: ${param.type}`));
+		}
+		const templateUri = param.repository + jsonFile.templates[param.type];
+		return Promise.resolve()
+			.then<Buffer>(() => promisedRequest({
+				uri: templateUri,
+				method: "GET",
+				encoding: null
+			}))
+			.then(buf => promisedExtract(
+				buf,
+				path.join(param._realTemplateDirectory, param.type)
+			));
+	})
+	.catch(err => {
+		param.logger.warn(err);
+		param.logger.info("using built-in template");
+	});
 }
 
-function getFactoryTemplate(param: InitParameterObject): Promise<Buffer> {
+export function getFactoryTemplate(param: InitParameterObject): Promise<Buffer> {
 	return new Promise<Buffer>((resolve, reject) => {
 		const templatePath = path.resolve(__dirname, "..", "templates", param.type + ".zip");
 		fs.readFile(templatePath, (err, data) => {
@@ -115,7 +112,7 @@ function promisedRequest(param: RequestParameterObject): Promise<any> {
 	});
 }
 
-function promisedExtract(buf: Buffer, extractPath: string): Promise<void> {
+export function promisedExtract(buf: Buffer, extractPath: string): Promise<void> {
 	return new Promise<void>((resolve, reject) => {
 		const stream = unzip.Extract({path: extractPath});
 		stream.on("error", () => {
@@ -133,7 +130,7 @@ function promisedExtract(buf: Buffer, extractPath: string): Promise<void> {
  */
 export function downloadTemplateIfNeeded(param: InitParameterObject): Promise<void> {
 	return new Promise<void>((resolve, reject) => {
-		const templatePath = path.join(param.localTemplateDirectory, param.type);
+		const templatePath = path.join(param._realTemplateDirectory, param.type);
 		fs.stat(templatePath, (err: any, stats: any) => {
 			if (err) {
 				if (err.code === "ENOENT") {

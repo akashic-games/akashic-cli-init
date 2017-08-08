@@ -15,7 +15,7 @@ export function listTemplates(param: InitParameterObject): Promise<void> {
 			templates = result.filter((filename) => (path.extname(filename) === ".zip"))
 				.map((filename) => path.basename(filename, path.extname(filename)));
 		})
-		.then(() => promisedReaddir(param.localTemplateDirectory))
+		.then(() => promisedReaddir(param._realTemplateDirectory))
 		.then((localTemplates) => {
 			templates = templates.concat(localTemplates);
 		})

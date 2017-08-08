@@ -43,8 +43,6 @@ function promptGetBasicParameters(current: BasicParameters): Promise<BasicParame
 		}
 	};
 	return new Promise<BasicParameters>((resolve: (param: BasicParameters) => void, reject: (err: any) => void) => {
-		Prompt.message = "";
-		Prompt.delimiter = "";
 		Prompt.start();
 		Prompt.get(schema, (err: any, result: BasicParameters) => {
 			Prompt.stop();

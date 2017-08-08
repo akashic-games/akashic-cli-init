@@ -4,7 +4,7 @@ import { InitParameterObject } from "./InitParameterObject";
 import { TemplateConfig } from "./TemplateConfig";
 
 export function readTemplateFile(param: InitParameterObject): Promise<TemplateConfig> {
-	const copySpecPath = path.join(param.localTemplateDirectory, param.type, "template.json");
+	const copySpecPath = path.join(param._realTemplateDirectory, param.type, "template.json");
 	return new Promise<TemplateConfig>((resolve, reject) => {
 		fs.readFile(copySpecPath, (err: any, data: any) => {
 			if (err) {
