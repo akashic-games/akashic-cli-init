@@ -46,6 +46,6 @@ npm test
 
 ## TypeScriptライブラリ利用時の注意
 
-ゲームにTypeScriptライブラリを利用する場合、このディレクトリで `npm install --save <package_name>` を実行した後、game/以下で `akashic-cli install <package_name>` する必要があります。
+ゲームにTypeScriptライブラリを利用する場合、このディレクトリで `npm install --save <package_name>` を実行した後、game/以下で `akashic install <package_name>` する必要があります。
 これはビルド時(型定義が必要)と実行時(スクリプトが必要)のディレクトリが分かれていることによるものです。
 

@@ -53,7 +53,7 @@ akashic-cli-init のテンプレートはローカルテンプレートディレ
 `~/.akashic-templates` になります。
 
 ## 設定項目
-akashic-cli init は以下の設定を利用します。設定は `akashic config` コマンドを利用して行います。
+akashic-cli-init は以下の設定を利用します。設定は `akashic config` コマンドを利用して行います。
 * `init.repository`: テンプレート配信サーバのURL。空文字列の時はサーバを利用しない。デフォルトは空文字列。
 * `init.defaultTemplateType`: テンプレートの種類が省略されたときに利用するテンプレート名。デフォルトは `javascript`。
 * `init.localTemplateDirectory`: ローカルファイルシステムでテンプレートを保存する場所。デフォルトは `$HOME/.akashic-templates`。
