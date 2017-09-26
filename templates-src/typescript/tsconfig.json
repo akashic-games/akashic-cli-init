@@ -8,7 +8,6 @@
   },
   "files": [
     "node_modules/@akashic/akashic-engine/lib/main.d.ts",
-    "typings/index.d.ts",
     "src/main.ts"
   ]
 }
