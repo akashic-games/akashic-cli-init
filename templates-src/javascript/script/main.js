@@ -1,6 +1,6 @@
 function main(param) {
 	const scene = new g.Scene({game: g.game});
-	scene.loaded.handle(function() {
+	scene.loaded.add(function() {
 		// 以下にゲームのロジックを記述します。
 		const rect = new g.FilledRect({
 			scene: scene,
@@ -8,7 +8,7 @@ function main(param) {
 			width: 32,
 			height: 32
 		});
-		rect.update.handle(function () {
+		rect.update.add(function () {
 			// 以下のコードは毎フレーム実行されます。
 			rect.x++;
 			if (rect.x > g.game.width) rect.x = 0;
