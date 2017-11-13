@@ -48,7 +48,7 @@ function promptGetBasicParameters(current: BasicParameters): Promise<BasicParame
 		Prompt.get(schema, (err: any, result: BasicParameters) => {
 			Prompt.stop();
 
-			err = basicParamsValidation(result, schema.properties);
+			if (!err) err =  basicParamsValidation(result, schema.properties);
 
 			if (err) {
 				reject(err);
@@ -61,24 +61,24 @@ function promptGetBasicParameters(current: BasicParameters): Promise<BasicParame
 
 
 /**
- * basciParameter値の妥当性チェック
+ * basicParameter値の妥当性チェック
  * schema.properties.typeと値の型が一致するかチェックする
  *
- * @param result {object}
+ * @param params {object}
  * @param props {object}
  * @return errMessage {string}
  */
-function basicParamsValidation(result: any, props: any): string {
+function basicParamsValidation(params: any, props: any): string {
 
 	let errMessage: string = "";
 
-	Object.keys(result).forEach((key) => {
+	Object.keys(params).forEach((key) => {
 
-		if (errMessage || !result.hasOwnProperty(key) || !props.hasOwnProperty(key)) return;
+		if (errMessage || !params.hasOwnProperty(key) || !props.hasOwnProperty(key)) return;
 
 		if (props[key].type === "number") {
 			// typeがnumberの場合で、値が NaN or null の場合、エラーとする
-			if (isNaN(result[key]) || result[key] === null)
+			if (isNaN(params[key]) || params[key] === null)
 				errMessage = props[key].message;
 		}
 	});
