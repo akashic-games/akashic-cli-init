@@ -66,14 +66,10 @@ function promptGetBasicParameters(current: BasicParameters): Promise<BasicParame
  *
  * @param params {object}
  * @param props {object}
- * @return errMessage {string}
  */
 function validateBasicParameters(params: any, props: any): string {
-
-	let errMessage: string = "";
-
+	let errMessage = "";
 	Object.keys(params).forEach((key) => {
-
 		if (errMessage || !params.hasOwnProperty(key) || !props.hasOwnProperty(key)) return;
 
 		if (props[key].type === "number") {
