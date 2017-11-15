@@ -23,6 +23,7 @@ export interface BasicParameters {
  * ユーザ入力で `BasicParameters` を取得する。
  */
 function promptGetBasicParameters(current: BasicParameters): Promise<BasicParameters> {
+
 	var schema = {
 		properties: {
 			width: {
@@ -46,6 +47,9 @@ function promptGetBasicParameters(current: BasicParameters): Promise<BasicParame
 		Prompt.start();
 		Prompt.get(schema, (err: any, result: BasicParameters) => {
 			Prompt.stop();
+
+			if (!err) err =  validateBasicParameters(result, schema.properties);
+
 			if (err) {
 				reject(err);
 			} else {
@@ -53,6 +57,28 @@ function promptGetBasicParameters(current: BasicParameters): Promise<BasicParame
 			}
 		});
 	});
+}
+
+
+/**
+ * basicParameter 値の妥当性チェック。
+ * schema.properties.type と値の型が一致するかチェックする。
+ *
+ * @param params {object}
+ * @param props {object}
+ */
+function validateBasicParameters(params: any, props: any): string {
+	let errMessage = "";
+	Object.keys(params).forEach((key) => {
+		if (errMessage || !params.hasOwnProperty(key) || !props.hasOwnProperty(key)) return;
+
+		if (props[key].type === "number") {
+			// type　が　number　の場合で、値が NaN or null の場合、エラーとする
+			if (isNaN(params[key]) || params[key] === null)
+				errMessage = props[key].message;
+		}
+	});
+	return errMessage;
 }
 
 /**

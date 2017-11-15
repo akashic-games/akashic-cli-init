@@ -31,5 +31,49 @@ describe("BasicParameters", function () {
 				})
 				.then(done, done.fail);
 		});
+
+		describe("parameter value is not number", () => {
+			it("value is NaN", done => {
+				mockPrompt.mock({ width: NaN, height: 27, fps: 30 });
+				bp.updateConfigurationFile(confPath, quietLogger)
+					.then(() => {done.fail();})
+					.catch((err) => {
+						expect(err).toBe("width must be a number");
+						done();
+					});
+			});
+
+			it("value is null", done => {
+				mockPrompt.mock({ width: null, height: 27, fps: 30 });
+				bp.updateConfigurationFile(confPath, quietLogger)
+					.then(() => {done.fail();})
+					.catch((err) => {
+						expect(err).toBe("width must be a number");
+						done();
+					});
+			});
+
+			it("value is string", done => {
+				mockPrompt.mock({ width: 111, height: "aaa", fps: 30 });
+				bp.updateConfigurationFile(confPath, quietLogger)
+					.then(() => {done.fail();})
+					.catch((err) => {
+						expect(err).toBe("height must be a number");
+						done();
+					});
+			});
+
+			it("value is undefined", done => {
+				mockPrompt.mock({ width: 111, height: 222, fps: undefined });
+				bp.updateConfigurationFile(confPath, quietLogger)
+					.then(() => {done.fail();})
+					.catch((err) => {
+						expect(err).toBe("fps must be a number");
+						done();
+					});
+			});
+
+		});
+
 	});
 });
