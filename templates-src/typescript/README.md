@@ -29,7 +29,7 @@ npm run build
 
 * `npm start`
 
-* `npm install -g @akashic/akashic-sandbox` 後、 `akashic-sandbox ./game`
+* `npm install -g @akashic/akashic-sandbox` 後、 `akashic-sandbox .`
 
 ## コンテンツの更新方法
 
