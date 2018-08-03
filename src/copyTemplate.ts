@@ -19,7 +19,7 @@ function runTemplateConfig(templateConfig: TemplateConfig, param: InitParameterO
 	const dstDirPath = param.cwd;
 	if (templateConfig.files) {
 		return Promise.resolve()
-			.then(() => copyFiles(templateConfig.files, srcDirPath, dstDirPath));
+			.then(() => copyFiles(templateConfig.files, srcDirPath, dstDirPath, param));
 	} else {
 		return copyAllTemplateFiles(param);
 	}
@@ -28,13 +28,18 @@ function runTemplateConfig(templateConfig: TemplateConfig, param: InitParameterO
 /**
  * 指定したファイルをコピーする
  */
-function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string): Promise<void> {
+function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string, param: InitParameterObject): Promise<void> {
 	return new Promise<void>((resolve, reject) => {
 		try {
 			copyFiles.forEach(file => {
-				if (file.src.indexOf("..") !== -1 || file.dst.indexOf("..") !== -1)
+				if (file.src.indexOf("..") !== -1 || (file.dst != null && file.dst.indexOf("..") !== -1))
 					throw(new Error("template.json has an invalid file name"));
-				fs.copySync(path.join(srcDir, file.src), path.join(dstDir, file.dst || file.src));
+				const dstPath = path.join(dstDir, file.dst || "", file.src);
+				if (param.forceCopy || !isExist(dstPath)) {
+					fs.copySync(path.join(srcDir, file.src), dstPath);
+				} else {
+					param.logger.info(`${file.src} is not copied, because ${file.src} exist.`);
+				}
 			});
 		} catch (err) {
 			reject(err);
@@ -59,10 +64,17 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 				return;
 			}
 			try {
+				console.log(files);
 				files.forEach(fileName => {
 					const srcPath = path.join(srcDirPath, fileName);
 					const dstPath = path.join(dstDirPath, fileName);
-					if (fileName !== "template.json") fs.copySync(srcPath, dstPath);
+					if (fileName !== "template.json") {
+						if (param.forceCopy || !isExist(dstPath)) {
+							fs.copySync(srcPath, dstPath);
+						} else {
+							param.logger.info(`${fileName} is not copied, because ${fileName} exist.`);
+						}
+					}
 				});
 			} catch (err) {
 				reject(new Error(`failed to copy template`));
@@ -72,6 +84,14 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 			resolve();
 		});
 	});
+}
+
+function isExist(filePath: string): boolean {
+	try {
+		return fs.statSync(filePath) ? true : false;
+	} catch (e) {
+		return false;
+	}
 }
 
 /**

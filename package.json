@@ -12,7 +12,7 @@
     "build": "gulp compile && gulp zip",
     "lint": "tslint -c tslint.json src/**/*.ts",
     "pretest": "npm run build",
-    "test": "gulp safeTest lint-md && npm run lint"
+    "test": "gulp test lint-md && npm run lint"
   },
   "author": "DWANGO Co., Ltd.",
   "license": "MIT",
@@ -27,18 +27,18 @@
     "package.json"
   ],
   "devDependencies": {
-    "del": "~1.1.1",
-    "gulp": "~3.9.1",
-    "gulp-istanbul": "~0.10.4",
+    "del": "~3.0.0",
+    "gulp": "~4.0.0",
+    "gulp-istanbul": "~1.1.3",
     "gulp-jasmine": "~2.3.0",
     "gulp-shell": "~0.5.2",
     "gulp-tslint": "~4.3.5",
     "gulp-zip": "^4.0.0",
-    "http-server": "^0.9.0",
-    "jasmine": "~2.1.1",
+    "http-server": "~0.11.1",
+    "jasmine": "~3.1.0",
     "jasmine-reporters": "~2.0.4",
     "jasmine-terminal-reporter": "~0.9.1",
-    "mdast": "~2.0.0",
+    "mdast": "~2.3.2",
     "mdast-lint": "~1.1.1",
     "mock-fs": "^4.2.0",
     "tslint": "^5.4.3",

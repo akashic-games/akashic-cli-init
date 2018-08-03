@@ -15,13 +15,13 @@ gulp.task("install:typings", shell.task(["gulp install:typings:src", "gulp insta
 gulp.task("install:typings:src", shell.task("typings install"));
 gulp.task("install:typings:spec", shell.task("typings install", { cwd: "spec/" }));
 
-gulp.task("clean", function(cb) { del(["lib", "spec/build"], cb); });
-gulp.task("clean:typings", function (cb) { del(["typings", "spec/typings"], cb); });
+gulp.task("clean", function(cb) { return del(["lib", "spec/build"], cb); });
+gulp.task("clean:typings", function (cb) { return del(["typings", "spec/typings"], cb); });
 
 gulp.task("compile", shell.task("tsc"));
-gulp.task("compile:spec", ["compile"], shell.task("tsc", {cwd: path.join(__dirname, "spec")}));
+gulp.task("compile:spec", gulp.series("compile", shell.task("tsc", {cwd: path.join(__dirname, "spec")})));
 
-gulp.task("zip", function() {
+gulp.task("zip", function(done) {
 	var templates = template_list.templates;
 	Object.keys(templates).forEach(function (key) {
 		gulp.src("templates-src/" + key + "/**/*", {
@@ -31,6 +31,7 @@ gulp.task("zip", function() {
 		.pipe(zip(key + ".zip"))
 		.pipe(gulp.dest("templates"));
 	});
+	done();
 });
 
 gulp.task("lint-md", function(){
@@ -38,12 +39,7 @@ gulp.task("lint-md", function(){
 		.pipe(shell(["mdast <%= file.path %> --frail --no-stdout --quiet"]));
 });
 
-gulp.task("safeTest", ["test"], function (cb) {
-	// child_process が終了しない場合があるので暫定的に追加しています。
-	setTimeout(() => process.exit(), 2000);
-});
-
-gulp.task("test", ["compile:spec"], function(cb) {
+gulp.task("test", gulp.series("compile:spec", function(cb) {
 	var server = child_process.spawn(
 		"node",
 		[path.join(__dirname, "node_modules", "http-server", "bin", "http-server"), "-p", "18080"],
@@ -65,7 +61,7 @@ gulp.task("test", ["compile:spec"], function(cb) {
 		}),
 		new reporters.JUnitXmlReporter()
 	];
-	gulp.src(["lib/**/*.js"])
+	return gulp.src(["lib/**/*.js"])
 		.pipe(istanbul())
 		.pipe(istanbul.hookRequire())
 		.on("finish", function() {
@@ -77,6 +73,6 @@ gulp.task("test", ["compile:spec"], function(cb) {
 					cb();
 				});
 		});
-});
+}));
 
-gulp.task("default", ["compile"]);
+gulp.task("default", gulp.series("compile"));

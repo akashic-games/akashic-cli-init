@@ -10,11 +10,12 @@ interface CommandParameterObject {
 	quiet?: boolean;
 	type?: string;
 	list?: boolean;
+	force?: boolean;
 }
 
 function cli(param: CommandParameterObject): void {
 	var logger = new ConsoleLogger({ quiet: param.quiet });
-	var initParam = { cwd: param.cwd, type: param.type, logger: logger };
+	var initParam = { cwd: param.cwd, type: param.type, logger: logger, forceCopy: param.force };
 	{
 		Promise.resolve()
 			.then(() => {
@@ -41,7 +42,8 @@ commander
 	.option("-q, --quiet", "Suppress output")
 	.option("-r, --registry <regname>", "Template registery to search template")
 	.option("-t, --type <type>", "Type of template")
-	.option("-l, --list", "Display available template list");
+	.option("-l, --list", "Display available template list")
+	.option("-f, --force", "Forcibly copy files from template list");
 
 export function run(argv: string[]): void {
 	commander.parse(argv);

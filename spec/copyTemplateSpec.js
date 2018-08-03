@@ -31,6 +31,12 @@ describe("copyTemplate.ts", () => {
 								"e": ""
 							}
 						}
+					},
+					copyTo: {
+						a: "xxxxxxxxxx",
+						c: {
+							a: "yyyyyyyy"
+						}
 					}
 				}
 			});
@@ -70,6 +76,67 @@ describe("copyTemplate.ts", () => {
 					expect(fs.statSync(path.join("home", "y", "z", "e")).isFile()).toBe(true);
 				})
 				.then(done, done.fail);
+		});
+
+		it("can not copy when same name file exist", done => {
+			var param = {
+				logger: new commons.ConsoleLogger({quiet: true}),
+				_realTemplateDirectory: ".akashic-templates",
+				type: "simple",
+				cwd: ".akashic-templates/copyTo"
+			};
+			ct.copyTemplate({}, param)
+				.then(() => {
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "a")).toString("utf8")).toBe("xxxxxxxxxx");
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "b")).toString("utf8")).toBe("bbb");
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "c", "a")).toString("utf8")).toBe("yyyyyyyy");
+				}).then(done, done.fail);
+		});
+
+		it("can not copy when same name file exist (specify files)", done => {
+			var param = {
+				logger: new commons.ConsoleLogger({quiet: true}),
+				_realTemplateDirectory: ".akashic-templates",
+				type: "simple",
+				cwd: ".akashic-templates/copyTo"
+			};
+			ct.copyTemplate({files:[{src: "a"}, {src: "a", dst: "c"}]}, param)
+				.then(() => {
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "a")).toString("utf8")).toBe("xxxxxxxxxx");
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "c", "a")).toString("utf8")).toBe("yyyyyyyy");
+				}).then(done, done.fail);
+		});
+
+		it("can copy files with force-option even if same name file exist", done => {
+			var param = {
+				logger: new commons.ConsoleLogger({quiet: true}),
+				_realTemplateDirectory: ".akashic-templates",
+				type: "simple",
+				cwd: ".akashic-templates/copyTo",
+				forceCopy: true
+			};
+			ct.copyTemplate({}, param)
+				.then(() => {
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "a")).toString("utf8")).toBe("aaa");
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "b")).toString("utf8")).toBe("bbb");
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "c", "a")).toString("utf8")).toBe("yyyyyyyy");
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "c", "d")).toString("utf8")).toBe("ddd");
+				}).then(done, done.fail);
+		});
+
+		it("can copy files with force-option even if same name file exist (specify files)", done => {
+			var param = {
+				logger: new commons.ConsoleLogger({quiet: true}),
+				_realTemplateDirectory: ".akashic-templates",
+				type: "simple",
+				cwd: ".akashic-templates/copyTo",
+				forceCopy: true
+			};
+			ct.copyTemplate({files:[{src: "a"}, {src: "a", dst: "c"}]}, param)
+				.then(() => {
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "a")).toString("utf8")).toBe("aaa");
+					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "c", "a")).toString("utf8")).toBe("aaa");
+				}).then(done, done.fail);
 		});
 	});
 });

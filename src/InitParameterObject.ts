@@ -51,6 +51,11 @@ export interface InitParameterObject {
 	 * この値はコマンド外部から指定できず、指定された場合、その値は破棄される。
 	 */
 	_realTemplateDirectory?: string;
+
+	/**
+	 * コピー元と同名のファイルがコピー先に存在していてもコピーするかどうか
+	 */
+	forceCopy?: boolean;
 }
 
 const templateConfigValidator: config.StringMap = {

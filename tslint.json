@@ -12,18 +12,26 @@
     "curly": false,
     "eofline": true,
     "forin": true,
-    "indent": [true, 4],
+    "indent": [true, "tabs"],
     "interface-name": false,
     "jsdoc-format": true,
     "label-position": true,
     "max-line-length": [true, 140],
     "member-ordering": [true, {
-        "order": [
-          "public-before-private",
-          "static-before-instance",
-          "variables-before-functions"
+      "order": [
+        "public-static-field",
+        "public-static-method",
+        "public-instance-field",
+        "private-instance-field",
+        "public-constructor",
+        "public-instance-method",
+        "private-instance-method"
       ]}
     ],
+    "trailing-comma": [true, {
+      "multiline": "never",
+      "singleline": "never"
+    }],
     "no-arg": true,
     "no-bitwise": false,
     "no-console": [true,
@@ -33,15 +41,14 @@
       "timeEnd",
       "trace"
     ],
-	"no-invalid-template-strings": true,
     "no-construct": true,
+    "no-parameter-properties": true,
     "no-debugger": true,
-    "no-duplicate-variable": false,
+    "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
-    "no-string-literal": true,
+    "no-string-literal": false,
     "no-switch-case-fall-through": true,
-    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
     "no-trailing-whitespace": true,
     "no-unused-expression": true,
     "no-unused-variable": true,
@@ -57,12 +64,7 @@
     "radix": true,
     "semicolon": true,
     "triple-equals": [true, "allow-null-check"],
-    "typedef": [true,
-      "property-declaration",
-      "member-variable-declaration",
-      "parameter",
-      "call-signature"
-    ],
+    "typedef": false,
     "typedef-whitespace": [true, {
       "call-signature": "nospace",
       "index-signature": "nospace",
