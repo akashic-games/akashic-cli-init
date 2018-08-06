@@ -38,7 +38,7 @@ function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string, pa
 				if (param.forceCopy || !isExist(dstPath)) {
 					fs.copySync(path.join(srcDir, file.src), dstPath);
 				} else {
-					param.logger.info(`${file.src} is not copied, because ${file.src} exist.`);
+					param.logger.info(`skipped to copy ${file.src}, because it already exists.`);
 				}
 			});
 		} catch (err) {
@@ -64,7 +64,6 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 				return;
 			}
 			try {
-				console.log(files);
 				files.forEach(fileName => {
 					const srcPath = path.join(srcDirPath, fileName);
 					const dstPath = path.join(dstDirPath, fileName);
@@ -72,7 +71,7 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 						if (param.forceCopy || !isExist(dstPath)) {
 							fs.copySync(srcPath, dstPath);
 						} else {
-							param.logger.info(`${fileName} is not copied, because ${fileName} exist.`);
+							param.logger.info(`skipped to copy ${fileName}, because it already exists.`);
 						}
 					}
 				});
