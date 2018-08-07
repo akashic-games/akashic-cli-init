@@ -31,15 +31,23 @@ function runTemplateConfig(templateConfig: TemplateConfig, param: InitParameterO
 function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string, param: InitParameterObject): Promise<void> {
 	return new Promise<void>((resolve, reject) => {
 		try {
+			const existFiles = copyFiles.filter(file => fs.existsSync(path.join(dstDir, file.dst || "", file.src)));
+			if (!param.forceCopy && existFiles.length > 0) {
+				const existNames = existFiles.map(file => file.dst ? `${file.dst}/${file.src}` : file.src);
+				const errorMessage = `skipped to copy files, because followings already exists. [${existNames.join(", ")}]`;
+				param.logger.info(errorMessage);
+				reject(new Error(errorMessage));
+				return;
+			}
 			copyFiles.forEach(file => {
 				if (file.src.indexOf("..") !== -1 || (file.dst != null && file.dst.indexOf("..") !== -1))
 					throw(new Error("template.json has an invalid file name"));
-				const dstPath = path.join(dstDir, file.dst || "", file.src);
-				if (param.forceCopy || !isExist(dstPath)) {
-					fs.copySync(path.join(srcDir, file.src), dstPath);
-				} else {
-					param.logger.info(`skipped to copy ${file.src}, because it already exists.`);
-				}
+				fs.copySync(
+					path.join(srcDir, file.src),
+					path.join(dstDir, file.dst || "", file.src),
+					{clobber: param.forceCopy}
+				);
+				param.logger.info(`copied ${file.src}.`);
 			});
 		} catch (err) {
 			reject(err);
@@ -63,16 +71,20 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 				reject(err);
 				return;
 			}
+			const existFiles = files.filter(fileName => fs.existsSync(path.join(dstDirPath, fileName)));
+			if (!param.forceCopy && existFiles.length > 0) {
+				const errorMessage = `skipped to copy files, because followings already exists. [${existFiles.join(", ")}]`;
+				param.logger.error(errorMessage, existFiles);
+				reject(new Error(errorMessage));
+				return;
+			}
 			try {
 				files.forEach(fileName => {
 					const srcPath = path.join(srcDirPath, fileName);
 					const dstPath = path.join(dstDirPath, fileName);
 					if (fileName !== "template.json") {
-						if (param.forceCopy || !isExist(dstPath)) {
-							fs.copySync(srcPath, dstPath);
-						} else {
-							param.logger.info(`skipped to copy ${fileName}, because it already exists.`);
-						}
+						fs.copySync(srcPath, dstPath, {clobber: param.forceCopy});
+						param.logger.info(`copied ${fileName}.`);
 					}
 				});
 			} catch (err) {

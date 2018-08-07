@@ -86,11 +86,11 @@ describe("copyTemplate.ts", () => {
 				cwd: ".akashic-templates/copyTo"
 			};
 			ct.copyTemplate({}, param)
-				.then(() => {
-					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "a")).toString("utf8")).toBe("xxxxxxxxxx");
-					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "b")).toString("utf8")).toBe("bbb");
-					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "c", "a")).toString("utf8")).toBe("yyyyyyyy");
-				}).then(done, done.fail);
+				.then(() => {done.fail();})
+				.catch((err) => {
+					expect(err.message).toBe("skipped to copy files, because followings already exists. [a, c]");
+					done();
+				});
 		});
 
 		it("can not copy when same name file exist (specify files)", done => {
@@ -100,11 +100,12 @@ describe("copyTemplate.ts", () => {
 				type: "simple",
 				cwd: ".akashic-templates/copyTo"
 			};
-			ct.copyTemplate({files:[{src: "a"}, {src: "a", dst: "c"}]}, param)
-				.then(() => {
-					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "a")).toString("utf8")).toBe("xxxxxxxxxx");
-					expect(fs.readFileSync(path.join(".akashic-templates", "copyTo", "c", "a")).toString("utf8")).toBe("yyyyyyyy");
-				}).then(done, done.fail);
+			ct.copyTemplate({files:[{src: "a", dst: "c"}]}, param)
+				.then(() => {done.fail();})
+				.catch((err) => {
+					expect(err.message).toBe("skipped to copy files, because followings already exists. [c/a]");
+					done();
+				});
 		});
 
 		it("can copy files with force-option even if same name file exist", done => {
