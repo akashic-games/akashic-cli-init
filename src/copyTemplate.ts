@@ -35,7 +35,6 @@ function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string, pa
 			if (!param.forceCopy && existFiles.length > 0) {
 				const existNames = existFiles.map(file => file.dst ? `${file.dst}/${file.src}` : file.src);
 				const errorMessage = `skipped to copy files, because followings already exists. [${existNames.join(", ")}]`;
-				param.logger.info(errorMessage);
 				reject(new Error(errorMessage));
 				return;
 			}
@@ -74,7 +73,6 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 			const existFiles = files.filter(fileName => fs.existsSync(path.join(dstDirPath, fileName)));
 			if (!param.forceCopy && existFiles.length > 0) {
 				const errorMessage = `skipped to copy files, because followings already exists. [${existFiles.join(", ")}]`;
-				param.logger.error(errorMessage, existFiles);
 				reject(new Error(errorMessage));
 				return;
 			}

@@ -100,10 +100,10 @@ describe("copyTemplate.ts", () => {
 				type: "simple",
 				cwd: ".akashic-templates/copyTo"
 			};
-			ct.copyTemplate({files:[{src: "a", dst: "c"}]}, param)
+			ct.copyTemplate({files:[{src: "a"}, {src: "a", dst: "c"}]}, param)
 				.then(() => {done.fail();})
 				.catch((err) => {
-					expect(err.message).toBe("skipped to copy files, because followings already exists. [c/a]");
+					expect(err.message).toBe("skipped to copy files, because followings already exists. [a, c/a]");
 					done();
 				});
 		});
