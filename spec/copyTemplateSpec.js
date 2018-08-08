@@ -78,7 +78,7 @@ describe("copyTemplate.ts", () => {
 				.then(done, done.fail);
 		});
 
-		it("can not copy when same name file exist", done => {
+		it("can not copy when file exists", done => {
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				_realTemplateDirectory: ".akashic-templates",
@@ -88,12 +88,12 @@ describe("copyTemplate.ts", () => {
 			ct.copyTemplate({}, param)
 				.then(() => {done.fail();})
 				.catch((err) => {
-					expect(err.message).toBe("skipped to copy files, because followings already exists. [a, c]");
+					expect(err.message).toBe("aborted to copy files, because followings already exist. [a, c]");
 					done();
 				});
 		});
 
-		it("can not copy when same name file exist (specify files)", done => {
+		it("can not copy when file exists (specify files)", done => {
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				_realTemplateDirectory: ".akashic-templates",
@@ -103,12 +103,12 @@ describe("copyTemplate.ts", () => {
 			ct.copyTemplate({files:[{src: "a"}, {src: "a", dst: "c"}]}, param)
 				.then(() => {done.fail();})
 				.catch((err) => {
-					expect(err.message).toBe("skipped to copy files, because followings already exists. [a, c/a]");
+					expect(err.message).toBe("aborted to copy files, because followings already exist. [a, c/a]");
 					done();
 				});
 		});
 
-		it("can copy files with force-option even if same name file exist", done => {
+		it("can copy files with force-option even if file exists", done => {
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				_realTemplateDirectory: ".akashic-templates",
@@ -125,7 +125,7 @@ describe("copyTemplate.ts", () => {
 				}).then(done, done.fail);
 		});
 
-		it("can copy files with force-option even if same name file exist (specify files)", done => {
+		it("can copy files with force-option even if file exists (specify files)", done => {
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				_realTemplateDirectory: ".akashic-templates",

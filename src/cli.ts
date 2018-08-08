@@ -43,7 +43,7 @@ commander
 	.option("-r, --registry <regname>", "Template registery to search template")
 	.option("-t, --type <type>", "Type of template")
 	.option("-l, --list", "Display available template list")
-	.option("-f, --force", "Forcibly copy files from template list");
+	.option("-f, --force", "If files to be copied already exist, overwrite them");
 
 export function run(argv: string[]): void {
 	commander.parse(argv);

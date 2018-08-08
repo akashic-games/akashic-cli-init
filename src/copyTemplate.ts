@@ -31,19 +31,27 @@ function runTemplateConfig(templateConfig: TemplateConfig, param: InitParameterO
 function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string, param: InitParameterObject): Promise<void> {
 	return new Promise<void>((resolve, reject) => {
 		try {
-			const existFiles = copyFiles.filter(file => fs.existsSync(path.join(dstDir, file.dst || "", file.src)));
-			if (!param.forceCopy && existFiles.length > 0) {
-				const existNames = existFiles.map(file => file.dst ? `${file.dst}/${file.src}` : file.src);
-				const errorMessage = `skipped to copy files, because followings already exists. [${existNames.join(", ")}]`;
-				reject(new Error(errorMessage));
-				return;
+			if (!param.forceCopy) {
+				const existFiles: string[] = [];
+				copyFiles.forEach(file => {
+					const destFile = file.dst ? path.join(file.dst, file.src) : file.src;
+					if (fs.existsSync(path.join(dstDir, destFile))) {
+						existFiles.push(destFile);
+					}
+				});
+				if (existFiles.length > 0) {
+					const errorMessage = `aborted to copy files, because followings already exist. [${existFiles.join(", ")}]`;
+					reject(new Error(errorMessage));
+					return;
+				}
 			}
 			copyFiles.forEach(file => {
-				if (file.src.indexOf("..") !== -1 || (file.dst != null && file.dst.indexOf("..") !== -1))
+				const dest = file.dst || "";
+				if (file.src.indexOf("..") !== -1 || (dest.indexOf("..") !== -1))
 					throw(new Error("template.json has an invalid file name"));
 				fs.copySync(
 					path.join(srcDir, file.src),
-					path.join(dstDir, file.dst || "", file.src),
+					path.join(dstDir, dest, file.src),
 					{clobber: param.forceCopy}
 				);
 				param.logger.info(`copied ${file.src}.`);
@@ -70,11 +78,13 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 				reject(err);
 				return;
 			}
-			const existFiles = files.filter(fileName => fs.existsSync(path.join(dstDirPath, fileName)));
-			if (!param.forceCopy && existFiles.length > 0) {
-				const errorMessage = `skipped to copy files, because followings already exists. [${existFiles.join(", ")}]`;
-				reject(new Error(errorMessage));
-				return;
+			if (!param.forceCopy) {
+				const existFiles = files.filter(fileName => fs.existsSync(path.join(dstDirPath, fileName)));
+				if (existFiles.length > 0) {
+					const errorMessage = `aborted to copy files, because followings already exist. [${existFiles.join(", ")}]`;
+					reject(new Error(errorMessage));
+					return;
+				}
 			}
 			try {
 				files.forEach(fileName => {
@@ -93,14 +103,6 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 			resolve();
 		});
 	});
-}
-
-function isExist(filePath: string): boolean {
-	try {
-		return fs.statSync(filePath) ? true : false;
-	} catch (e) {
-		return false;
-	}
 }
 
 /**

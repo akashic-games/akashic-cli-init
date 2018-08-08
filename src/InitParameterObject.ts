@@ -53,7 +53,7 @@ export interface InitParameterObject {
 	_realTemplateDirectory?: string;
 
 	/**
-	 * コピー元と同名のファイルがコピー先に存在していてもコピーするかどうか
+	 * コピー先に既にファイルが存在していてもコピーするかどうか
 	 */
 	forceCopy?: boolean;
 }
