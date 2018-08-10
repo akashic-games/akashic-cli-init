@@ -19,7 +19,7 @@ function runTemplateConfig(templateConfig: TemplateConfig, param: InitParameterO
 	const dstDirPath = param.cwd;
 	if (templateConfig.files) {
 		return Promise.resolve()
-			.then(() => copyFiles(templateConfig.files, srcDirPath, dstDirPath));
+			.then(() => copyFiles(templateConfig.files, srcDirPath, dstDirPath, param));
 	} else {
 		return copyAllTemplateFiles(param);
 	}
@@ -28,13 +28,33 @@ function runTemplateConfig(templateConfig: TemplateConfig, param: InitParameterO
 /**
  * 指定したファイルをコピーする
  */
-function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string): Promise<void> {
+function copyFiles(copyFiles: CopyListItem[], srcDir: string, dstDir: string, param: InitParameterObject): Promise<void> {
 	return new Promise<void>((resolve, reject) => {
 		try {
+			if (!param.forceCopy) {
+				const existFiles: string[] = [];
+				copyFiles.forEach(file => {
+					const destFile = file.dst ? path.join(file.dst, file.src) : file.src;
+					if (fs.existsSync(path.join(dstDir, destFile))) {
+						existFiles.push(destFile);
+					}
+				});
+				if (existFiles.length > 0) {
+					const errorMessage = `aborted to copy files, because followings already exist. [${existFiles.join(", ")}]`;
+					reject(new Error(errorMessage));
+					return;
+				}
+			}
 			copyFiles.forEach(file => {
-				if (file.src.indexOf("..") !== -1 || file.dst.indexOf("..") !== -1)
+				const dest = file.dst || "";
+				if (file.src.indexOf("..") !== -1 || (dest.indexOf("..") !== -1))
 					throw(new Error("template.json has an invalid file name"));
-				fs.copySync(path.join(srcDir, file.src), path.join(dstDir, file.dst || file.src));
+				fs.copySync(
+					path.join(srcDir, file.src),
+					path.join(dstDir, dest, file.src),
+					{clobber: param.forceCopy}
+				);
+				param.logger.info(`copied ${file.src}.`);
 			});
 		} catch (err) {
 			reject(err);
@@ -58,11 +78,22 @@ function copyAllTemplateFiles(param: InitParameterObject): Promise<void> {
 				reject(err);
 				return;
 			}
+			if (!param.forceCopy) {
+				const existFiles = files.filter(fileName => fs.existsSync(path.join(dstDirPath, fileName)));
+				if (existFiles.length > 0) {
+					const errorMessage = `aborted to copy files, because followings already exist. [${existFiles.join(", ")}]`;
+					reject(new Error(errorMessage));
+					return;
+				}
+			}
 			try {
 				files.forEach(fileName => {
 					const srcPath = path.join(srcDirPath, fileName);
 					const dstPath = path.join(dstDirPath, fileName);
-					if (fileName !== "template.json") fs.copySync(srcPath, dstPath);
+					if (fileName !== "template.json") {
+						fs.copySync(srcPath, dstPath, {clobber: param.forceCopy});
+						param.logger.info(`copied ${fileName}.`);
+					}
 				});
 			} catch (err) {
 				reject(new Error(`failed to copy template`));
