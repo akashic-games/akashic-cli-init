@@ -1,8 +1,8 @@
 function main(param) {
-	const scene = new g.Scene({game: g.game});
+	var scene = new g.Scene({game: g.game});
 	scene.loaded.add(function() {
 		// 以下にゲームのロジックを記述します。
-		const rect = new g.FilledRect({
+		var rect = new g.FilledRect({
 			scene: scene,
 			cssColor: "#ff0000",
 			width: 32,
