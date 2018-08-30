@@ -1,31 +1,12 @@
 {
-  "env": {
-    "browser": true,
-    "commonjs": true
-  },
-  "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaVersion": 5
   },
-  "globals": {
-    "g": true
-  },
   "rules": {
-    "indent": [
-      "error",
-      "tab"
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "double"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ]
+    "no-dupe-args": 2,
+    "no-dupe-keys": 2,
+    "no-duplicate-case": 2,
+    "no-inner-declarations": [2, "functions"],
+    "no-irregular-whitespace": 2
   }
 }
