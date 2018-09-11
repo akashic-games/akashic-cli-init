@@ -54,10 +54,9 @@ npm install
 
 ## テスト方法
 
-1. [ESLint](https://github.com/eslint/eslint "ESLint")を使ったLint
-
-が実行されます。
+以下のコマンドで [ESLint](https://github.com/eslint/eslint "ESLint")を使ったLintが実行されます。
+スクリプトアセット内にES5構文に反する記述がある場合エラーを返します。
 
 ```sh
-npm lint
+npm run lint
 ```
