@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.3.5
+* javascriptテンプレートのREADMEを更新
+
 ## 0.3.4
 * javascriptテンプレートを更新
   * スクリプトファイルをlintしてES5構文になっているかチェックする機能を追加
