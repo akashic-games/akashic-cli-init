@@ -40,7 +40,7 @@
     "jasmine-terminal-reporter": "~0.9.1",
     "mdast": "~2.3.2",
     "mdast-lint": "~1.1.1",
-    "mock-fs": "^4.2.0",
+    "mock-fs": "~4.7.0",
     "tslint": "^5.4.3",
     "typescript": "~2.1.6",
     "typings": "1.0.4"
@@ -50,7 +50,7 @@
     "@akashic/akashic-cli-config": "~0.1.0",
     "@akashic/akashic-cli-commons": "~0.2.0",
     "commander": "2.8.1",
-    "fs-extra": "0.30.0",
+    "fs-extra": "7.0.0",
     "prompt": "1.0.0",
     "unzip": "^0.1.11",
     "request": "^2.74.0"
