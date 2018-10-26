@@ -10,7 +10,7 @@
     "clean": "gulp clean",
     "start": "npm run build && node bin/run",
     "build": "gulp compile && gulp zip",
-    "lint": "tslint -c tslint.json src/**/*.ts",
+    "lint": "tslint --project tsconfig.json -c tslint.json src/**/*.ts",
     "pretest": "npm run build",
     "test": "gulp test lint-md && npm run lint"
   },
@@ -28,22 +28,22 @@
   ],
   "devDependencies": {
     "del": "~3.0.0",
-    "gulp": "~4.0.0",
+    "gulp": "~3.9.1",
     "gulp-istanbul": "~1.1.3",
-    "gulp-jasmine": "~2.3.0",
+    "gulp-jasmine": "~4.0.0",
     "gulp-shell": "~0.5.2",
-    "gulp-tslint": "~4.3.5",
+    "gulp-tslint": "~8.1.3",
     "gulp-zip": "^4.0.0",
     "http-server": "~0.11.1",
-    "jasmine": "~3.1.0",
-    "jasmine-reporters": "~2.0.4",
-    "jasmine-terminal-reporter": "~0.9.1",
+    "jasmine": "~3.2.0",
+    "jasmine-reporters": "~2.3.2",
+    "jasmine-terminal-reporter": "~1.0.3",
     "mdast": "~2.3.2",
     "mdast-lint": "~1.1.1",
     "mock-fs": "~4.7.0",
     "tslint": "^5.4.3",
     "typescript": "~2.1.6",
-    "typings": "1.0.4"
+    "typings": "2.1.1"
   },
   "typings": "lib/index.d.ts",
   "dependencies": {
