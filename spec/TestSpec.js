@@ -31,22 +31,22 @@ describe("BasicParameters", function () {
 		it("update game.json", done => {
 			console.log("++++++++ start-----");
 			var conf = { width: 12, height: 23, fps: 34, assets: {} };
-			fs.writeJsonSync(confPath, conf);
+			fs.writeJsonSync(confPath, conf)
 			bp.updateConfigurationFile(confPath, quietLogger)
-				.then(() => {
-					console.log("++++++++");
-					expect(fs.readJsonSync(confPath))
-						.toEqual({ width: 42, height: 27, fps: 30, assets: {} });
-					done();
-				})
-				.catch(err => {
-					console.log("++++++++" , err );
-				})
-				// .then( () => {
-				// 	console.log("------ aaaa");
-				// 	done();
-				// });
-				.then(done());
+			.then(() => {
+				console.log("++++++++@@@@ 1");
+				expect(fs.readJsonSync(confPath))
+					.toEqual({ width: 42, height: 27, fps: 30, assets: {} });
+				done();
+			})
+			.catch(err => {
+				console.log("++++++++err" , err );
+			})
+			// .then( () => {
+			// 	console.log("------ aaaa");
+			// 	done();
+			// });
+			.then(done());
 		});
 */
 	});

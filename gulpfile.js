@@ -52,7 +52,7 @@ gulp.task("test", gulp.series("compile:spec", function(cb) {
 			console.log("\nhttp-server (stderr)", data.toString());
 	});
 	server.on("close", function () {
-		console.log("\nhttp-server: stop");
+			console.log("\nhttp-server: stop");
 	});
 	var jasmineReporters = [ new Reporter({
 			isVerbose: true,
