@@ -29,7 +29,7 @@ describe("BasicParameters", function () {
 					expect(fs.readJsonSync(confPath))
 						.toEqual({width: 42, height: 27, fps: 30, assets: {}});
 				})
-				.then(done());
+				.then(done, done.fail);
 		});
 
 		describe("parameter value is not number", () => {
