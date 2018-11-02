@@ -40,7 +40,7 @@
     "jasmine-terminal-reporter": "~0.9.1",
     "mdast": "~2.3.2",
     "mdast-lint": "~1.1.1",
-    "mock-fs": "~4.7.0",
+    "mock-fs": "~4.5.0",
     "tslint": "^5.4.3",
     "typescript": "~2.1.6",
     "typings": "2.1.1"
