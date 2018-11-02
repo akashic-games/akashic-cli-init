@@ -7,7 +7,7 @@
   "scripts": {
     "start": "akashic-sandbox .",
     "lint": "eslint script",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run lint"
   },
   "keywords": [],
   "author": "",
