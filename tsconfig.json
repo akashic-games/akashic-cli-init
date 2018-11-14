@@ -9,7 +9,7 @@
     "sourceMap": true
   },
   "files": [
-	"./node_modules/typescript/lib/lib.es6.d.ts",
+    "./node_modules/typescript/lib/lib.es6.d.ts",
     "./typings/unzip.d.ts",
     "./typings/prompt.d.ts",
     "./src/index.ts"
