@@ -47,8 +47,8 @@
   },
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@akashic/akashic-cli-config": "~0.1.0",
-    "@akashic/akashic-cli-commons": "~0.2.0",
+    "@akashic/akashic-cli-config": "../akashic-cli-config",
+    "@akashic/akashic-cli-commons": "../akashic-cli-commons",
     "commander": "2.8.1",
     "fs-extra": "0.30.0",
     "prompt": "1.0.0",
