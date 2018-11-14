@@ -11,12 +11,7 @@ var Reporter = require("jasmine-terminal-reporter");
 var child_process = require("child_process");
 var template_list = require("./templates/template-list.json");
 
-gulp.task("install:typings", shell.task(["gulp install:typings:src", "gulp install:typings:spec"]));
-gulp.task("install:typings:src", shell.task("typings install"));
-gulp.task("install:typings:spec", shell.task("typings install", { cwd: "spec/" }));
-
 gulp.task("clean", function(cb) { return del(["lib", "spec/build"], cb); });
-gulp.task("clean:typings", function (cb) { return del(["typings", "spec/typings"], cb); });
 
 gulp.task("compile", shell.task("tsc"));
 gulp.task("compile:spec", gulp.series("compile", shell.task("tsc", {cwd: path.join(__dirname, "spec")})));
