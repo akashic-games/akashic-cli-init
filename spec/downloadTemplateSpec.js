@@ -58,24 +58,36 @@ describe("downloadTemplate.ts", () => {
 				.then(done, done.fail);
 		});
 
-		it("extract factory template", () => {
-			var tmpDir = os.tmpdir();
-			var param = {
-				logger: new commons.ConsoleLogger({quiet: true}),
-				configFile: new MockConfigFile({}),
-				_realTemplateDirectory: tmpDir,
-				repository: "",
-				templateListJsonPath: "templates/template-list.json",
-				type: "javascript",
-			};
-			dt.downloadTemplateIfNeeded(param)
-				.then(() => {
-					expect(fs.statSync(path.join(
-						tmpDir,
-						"javascript/javascript",
-						"game.json"
-					)).isFile()).toBe(true);
-				});
+		it("It works even if params.repository is empty", done => {
+			var param = {};
+			new Promise((resolve, reject) => {
+				fs.mkdtemp(path.join(os.tmpdir(), "init-test"), (err, dir) => {
+					if (err) done.fail();
+					return resolve(dir);
+				})
+			})
+			.then((dir) =>{
+				param = {
+					logger: new commons.ConsoleLogger({ quiet: true }),
+					_realTemplateDirectory: dir,
+					repository: "http://127.0.0.1:18080/templates/",
+					templateListJsonPath: "template-list.json",
+					type: "javascript",
+				};
+				return dt.downloadTemplateIfNeeded(param);
+			})
+			.then(()=> {
+				param.repository = "";
+				dt.downloadTemplateIfNeeded(param)
+					.then(() => {
+						expect(fs.statSync(path.join(
+							param._realTemplateDirectory,
+							"javascript/javascript",
+							"game.json"
+						)).isFile()).toBe(true);
+					})
+					.then(done, done.fail);
+			});
 		});
 	});
 });
