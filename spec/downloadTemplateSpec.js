@@ -17,7 +17,7 @@ describe("downloadTemplate.ts", () => {
 					info: s => { }
 				},
 				repository: "http://127.0.0.1:18080/",
-				templateListJsonPath: "template-list.json",
+				templateListJsonPath: "templates/template-list.json",
 				type: "javascript",
 				_realTemplateDirectory: path.join(os.homedir(), ".akashic-templates")
 			};
@@ -33,12 +33,12 @@ describe("downloadTemplate.ts", () => {
 	describe("downloadTemplate()", () => {
 		it("download javascript templates", done => {
 			var str = "";
-			var tmpDir = path.join(os.tmpdir(), ".akashic-template");
+			var tmpDir = path.join(os.tmpdir(), "javascript");
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				_realTemplateDirectory: tmpDir,
 				repository: "http://127.0.0.1:18080/",
-				templateListJsonPath: "template-list.json",
+				templateListJsonPath: "templates/template-list.json",
 				type: "javascript",
 			};
 			dt.downloadTemplateIfNeeded(param)
@@ -60,13 +60,13 @@ describe("downloadTemplate.ts", () => {
 
 		it("extract factory template", done => {
 			var str = "";
-			var tmpDir = path.join(os.tmpdir(), ".akashic-template");
+			var tmpDir = path.join(os.tmpdir(), "javascript");
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				configFile: new MockConfigFile({}),
 				_realTemplateDirectory: tmpDir,
 				repository: "",
-				templateListJsonPath: "template-list.json",
+				templateListJsonPath: "templates/template-list.json",
 				type: "javascript",
 			};
 			dt.downloadTemplateIfNeeded(param)
