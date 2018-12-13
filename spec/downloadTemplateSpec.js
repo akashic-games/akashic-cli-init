@@ -7,6 +7,7 @@ var path = require("path");
 var MockConfigFile = require("./support/mockConfigFile");
 
 describe("downloadTemplate.ts", () => {
+
 	describe("listTemplates()", () => {
 		it("list templates", done => {
 			var str = "";
@@ -16,8 +17,8 @@ describe("downloadTemplate.ts", () => {
 					print: s => { str = str + s + "\n"; },
 					info: s => { }
 				},
-				repository: "http://127.0.0.1:18080/",
-				templateListJsonPath: "templates/template-list.json",
+				repository: "http://127.0.0.1:18080/templates/",
+				templateListJsonPath: "template-list.json",
 				type: "javascript",
 				_realTemplateDirectory: path.join(os.homedir(), ".akashic-templates")
 			};
@@ -32,25 +33,24 @@ describe("downloadTemplate.ts", () => {
 
 	describe("downloadTemplate()", () => {
 		it("download javascript templates", done => {
-			var str = "";
-			var tmpDir = path.join(os.tmpdir(), "javascript");
+			var tmpDir = os.tmpdir();
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				_realTemplateDirectory: tmpDir,
-				repository: "http://127.0.0.1:18080/",
-				templateListJsonPath: "templates/template-list.json",
+				repository: "http://127.0.0.1:18080/templates/",
+				templateListJsonPath: "template-list.json",
 				type: "javascript",
 			};
 			dt.downloadTemplateIfNeeded(param)
 				.then(() => {
 					expect(fs.statSync(path.join(
 						tmpDir,
-						"javascript",
+						"javascript/javascript",
 						"game.json"
 					)).isFile()).toBe(true);
 					expect(fs.statSync(path.join(
 						tmpDir,
-						"javascript",
+						"javascript/javascript",
 						"script",
 						"main.js"
 					)).isFile()).toBe(true);
@@ -59,8 +59,8 @@ describe("downloadTemplate.ts", () => {
 		});
 
 		it("extract factory template", done => {
-			var str = "";
-			var tmpDir = path.join(os.tmpdir(), "javascript");
+
+			var tmpDir = os.tmpdir();
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
 				configFile: new MockConfigFile({}),
@@ -73,7 +73,7 @@ describe("downloadTemplate.ts", () => {
 				.then(() => {
 					expect(fs.statSync(path.join(
 						tmpDir,
-						"javascript",
+						"javascript/javascript",
 						"game.json"
 					)).isFile()).toBe(true);
 				})
