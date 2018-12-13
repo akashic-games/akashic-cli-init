@@ -58,7 +58,7 @@ describe("downloadTemplate.ts", () => {
 				.then(done, done.fail);
 		});
 
-		it("extract factory template", done => {
+		it("extract factory template", () => {
 			var tmpDir = os.tmpdir();
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
@@ -75,8 +75,7 @@ describe("downloadTemplate.ts", () => {
 						"javascript/javascript",
 						"game.json"
 					)).isFile()).toBe(true);
-				})
-				.then(done, done.fail);
+				});
 		});
 	});
 });
