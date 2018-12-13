@@ -59,7 +59,6 @@ describe("downloadTemplate.ts", () => {
 		});
 
 		it("extract factory template", done => {
-
 			var tmpDir = os.tmpdir();
 			var param = {
 				logger: new commons.ConsoleLogger({quiet: true}),
